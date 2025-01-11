@@ -58,7 +58,7 @@ To finalize the setup, I copied Snort’s default configuration files from the s
 <br />
 <br />
 I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
 I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
