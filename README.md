@@ -23,28 +23,62 @@ This project focuses on implementing Snort, an open-source Intrusion Detection S
 <h2>Program walk-through:</h2>
 
 <p align="center">
-In this step, I used the tcpdump command to capture and analyze network traffic to and from google.com. By running sudo tcpdump -c 10 -#XXtttt host google.com, I captured 10 packets, ensuring the data was displayed in both hexadecimal and ASCII formats for detailed examination. The use of high-precision timestamps and packet counters provided clear tracking of the captured traffic, offering a structured view of the interactions with google.com. : <br/>
-<img src="https://imgur.com/NIIYMZw.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+To begin the project, I started by preparing the environment for Snort installation. I first updated the package list on my Debian Linux virtual machine using the commands: sudo apt update & sudo apt upgrade -y. Next, I installed the required dependencies and tools for Snort to function correctly. This included libraries and utilities such as build-essential, libpcap-dev, libpcre3-dev, and libdnet-dev. I installed these by running: sudo apt install -y build-essential libpcap-dev libpcre3-dev libdnet-dev zlib1g-dev. This step ensured that the system was fully prepared for the installation and configuration of Snort in the next steps. : <br/>
+<img src="https://i.imgur.com/aOf5YSt.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<img src="https://i.imgur.com/LiYPcSl.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used tcpdump to capture traffic to and from google.com and saved it to a file named capture.cpap using the -w option. To automate logging, I created a script watchdog.sh that monitored traffic and managed sequential dump files, with each file limited to 100 bytes in size using the -C 1 flag. The script ensured efficient and organized logging of captured data. :  <br/>
-<img src="https://imgur.com/xrM9S7u.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+After setting up the dependencies, I downloaded the latest Snort source code from the official Snort website. Using the wget command, I downloaded the tarball directly to my virtual machine. Once the download was complete, I extracted the tarball using the tar command, which created a directory with the Snort source code. I navigated into the extracted directory and started the compilation process by running the ./configure script to ensure all dependencies were correctly linked. After verifying that the configuration was successful, I compiled the source code with the make command and then installed Snort on the system using sudo make install. :  <br/>
+<img src="https://i.imgur.com/olMOi5Z.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<img src="https://i.imgur.com/rCumYJf.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<img src="https://i.imgur.com/nEJ6rpA.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I tested the functionality of watchdog.sh to ensure it effectively captured and logged network traffic as intended. This involved running the script, verifying that sequential dump files were created correctly based on the specified size limit, and confirming the captured data was accurate and complete. : <br/>
-<img src="https://imgur.com/lcp5j95.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+With Snort successfully installed, I proceeded to verify the installation to ensure everything was set up correctly. I started by running the snort -V command, which displayed the installed version of Snort along with its build details. This confirmed that Snort was properly installed and functioning : <br/>
+<img src="https://i.imgur.com/gfQ8667.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to open and analyze the captured packets in greater detail, utilizing its advanced filtering and highlighting features to identify and examine any encrypted data collected by TCPdump. :  <br/>
-<img src="https://imgur.com/DTF5YC3.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+After verifying the Snort installation, I organized the environment by creating directories for Snort's configuration files and logs. I created a directory for storing custom and predefined Snort rules, another for storing log files, and a separate one for dynamic rule files. These directories were set up under /etc/snort/rules, /var/log/snort, and /usr/local/lib/snort_dynamicrules, respectively. Once the directories were created, I adjusted their permissions to ensure Snort could access and use them properly. This step provided a clear and organized structure for managing Snort's configuration files and logs, setting the foundation for efficient monitoring and analysis. :  <br/>
+<img src="https://i.imgur.com/WkbTyJv.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I captured the private key used by the browser during an SSL handshake by setting the SSLKEYLOGFILE environment variable to specify the file path for storing private keys. This allowed the browser to log the keys used in SSL encryption. I then switched the host from google.com to nhs.uk to generate more traffic and encrypted data for capture, providing a richer dataset for analysis. :  <br/>
-<img src="https://imgur.com/xZVSOJg.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+With the directories set up, I proceeded to download the Snort rule set to enable the detection of specific threats. Using the wget command, I downloaded the official Snort rule package from the Snort website. Once the download was complete, I extracted the contents of the tarball using the tar command. This provided access to the predefined rules and configuration files. After extracting the files, I copied the necessary rule files into the /etc/snort/rules directory using the sudo cp command. This ensured that Snort could access and utilize the rules during its operation. By completing this step, I equipped Snort with the rules required to identify and analyze potential network threats effectively. :  <br/>
+<img src="https://i.imgur.com/2Z5fbLr.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<img src="https://i.imgur.com/0XMtCKa.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<img src="https://i.imgur.com/zwwLskH.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I configured the protocol by setting the TLS Pre-Master Secret log file, enabling the decryption of captured encrypted traffic. This allowed me to analyze the encrypted data in plain text for detailed examination. :  <br/>
-<img src="https://imgur.com/59yPtaJ.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+To finalize the setup, I copied Snort’s default configuration files from the source directory to the /etc/snort directory. These files included the main configuration file (snort.conf) and other supporting files necessary for Snort’s operation. Using the sudo cp command, I carefully transferred the configuration files from the directory where Snort was installed to the /etc/snort directory. This step ensured that Snort had access to its default configurations in the proper location, allowing me to modify and customize them later as needed. With these files in place, Snort was fully prepared for configuration and testing. :  <br/>
+<img src="https://i.imgur.com/NRlFRYk.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<br />
+I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<br />
+<br />
+I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<br />
+<br />
+I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<br />
+<br />
+I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<br />
+<br />
+I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<br />
+<br />
+I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
+<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
 <br />
 <br />
 I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
