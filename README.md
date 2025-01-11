@@ -20,7 +20,7 @@ This project focuses on implementing Snort, an open-source Intrusion Detection S
 - <b>Network Environment: A home lab network setup to monitor and analyze simulated ICMP and Nmap traffic using Snort IDS</b>
 - <b>Development/Testing Tools: Snort IDS, VirtualBox</b>
 
-<h2>Program walk-through:</h2>
+<h2>Project walk-through:</h2>
 
 <p align="center">
 To begin the project, I started by preparing the environment for Snort installation. I first updated the package list on my Debian Linux virtual machine using the commands: sudo apt update & sudo apt upgrade -y. Next, I installed the required dependencies and tools for Snort to function correctly. This included libraries and utilities such as build-essential, libpcap-dev, libpcre3-dev, and libdnet-dev. I installed these by running: sudo apt install -y build-essential libpcap-dev libpcre3-dev libdnet-dev zlib1g-dev. This step ensured that the system was fully prepared for the installation and configuration of Snort in the next steps. : <br/>
@@ -57,34 +57,39 @@ To finalize the setup, I copied Snort’s default configuration files from the s
 <img src="https://i.imgur.com/NRlFRYk.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="IDS Steps"/>
+To manage my own custom rules for Snort, I created a dedicated local directory. Instead of adding customized rules to the Snort community rules, this approach kept my custom rules separate and organized. Using the mkdir command, I created a directory named local.rules within the /etc/snort/rules folder. This structure allowed me to easily manage and edit my personalized rules without interfering with the predefined rule sets. By keeping my custom rules in a separate directory, I maintained a clear distinction between the community-provided rules and the ones I tailored for specific scenarios in my project. This setup ensured flexibility and organization for managing rule configurations. :  <br/>
+<img src="https://i.imgur.com/FBf95xl.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+To create a custom rule for detecting ICMP traffic, I opened the local.rules file located in the /etc/snort/rules directory. Using the nano text editor, I added a rule that would generate an alert for any ICMP traffic, regardless of its source or destination. The rule included a custom message, "ICMP Detected," to clearly indicate the type of traffic being flagged. After saving the file, I ensured the Snort configuration referenced the local.rules file, allowing this custom rule to be applied during traffic monitoring. This step demonstrated Snort’s capability to support tailored detection rules. :  <br/>
+<img src="https://i.imgur.com/Am5C7YZ.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+To configure Snort for my specific network environment, I opened the snort.lua configuration file using the nano text editor. I accessed the file with the following command: sudo nano /etc/snort/snort.lua. Within the configuration file, I located the section for setting network variables. I focused on the HOME_NET variable, which defines the range of IP addresses Snort considers part of the local network. I updated this variable to match my home lab’s local network by specifying the appropriate IP range. After saving the changes, this configuration ensured that Snort accurately monitored traffic for my designated local network, enabling precise and targeted intrusion detection.
+ :  <br/>
+<img src="https://i.imgur.com/VMqJ4wA.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+While editing the snort.lua configuration file, I added the paths to both the Snort community rules and my custom local rules. These rules enable Snort to detect predefined threats and any custom conditions I specified. In the configuration file, I located the section where rule files are included and added entries for the Snort community rules and the local.rules file. This ensured that Snort would load and apply both rule sets during operation. After saving the updated configuration, Snort was configured to use a combination of community-provided and custom rules, enabling comprehensive and tailored traffic monitoring for my project. :  <br/>
+<img src="https://i.imgur.com/PDyhNVO.png" IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+After updating the Snort configuration file, I saved the changes and closed the file. To ensure that the configuration was valid and free of errors, I tested it using Snort's test mode. I ran the following command to specify the configuration file and verify its correctness: snort -T -c /etc/snort/snort.lua. This command checked the configuration for any syntax errors or issues. The output confirmed that the configuration was successfully loaded and ready for use. This step ensured that Snort was properly set up and prepared for monitoring and analysis.
+ :  <br/>
+<img src="https://i.imgur.com/jl2iFx0.png" height="80%" width="80%" alt="IDS Steps"/>
+<br />
+<img src="https://i.imgur.com/VYOH6VN.png" height="80%" width="80%" alt="IDS Steps"/>
+<br /r>
+<br />
+With the configuration validated, I proceeded to run Snort in Intrusion Detection System (IDS) mode. Using the following command, I started Snort to monitor traffic on my specified network interface (eth0):snort -A fast -q -c /etc/snort/snort.lua -i eth0. In this mode, Snort operated quietly (-q) while logging alerts in a simplified format (-A fast). It used the configuration file located at /etc/snort/snort.lua and monitored the eth0 interface for suspicious activity. This step activated Snort as an IDS, enabling real-time detection and logging of network events based on the configured rules and settings. :  <br/>
+<img src="https://i.imgur.com/cmOq8Y1.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+To test the Snort IDS, I initiated Nmap scans from another machine on the network to generate traffic. These scans were designed to simulate potential reconnaissance activity, which Snort was configured to detect. While the scans were running, I monitored the logs generated by Snort using the following command: sudo tail -f /var/log/snort/alert_fast.log. This allowed me to view alerts in real time as Snort detected and logged the activity. The logs confirmed that Snort successfully identified and recorded the Nmap scan traffic, demonstrating its functionality as an intrusion detection system.
+:  <br/>
+<img src="https://i.imgur.com/IIHtuNG.png" height="80%" width="80%" alt="IDS Steps"/>
 <br />
 <br />
-I used Wireshark to review the captured packets and analyze the decrypted data, focusing on the SSL handshake. This allowed me to examine the traffic in various formats, providing a detailed view of the handshake process and encrypted communications. :  <br/>
-<img src="https://imgur.com/EsvGkPU.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
-<br />
-<br />
-Observe the decrypted data:  <br/>
-<img src="https://imgur.com/e34VzbD.png" height="80%" width="80%" alt="Network Traffic Analysis & Decryption with Logging Tool Steps"/>
+<h2>Project Summary:</h2>
+This project involved setting up and configuring Snort as an Intrusion Detection System (IDS) in a home lab environment. Through steps including installation, configuration, and rule customization, I successfully used Snort to monitor and analyze network traffic. By generating traffic using Nmap scans and reviewing logs in real time, I demonstrated Snort's ability to detect and log suspicious activity, showcasing proficiency in network monitoring and intrusion detection.
 </p>
