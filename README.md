@@ -10,15 +10,15 @@ This project focuses on implementing Snort, an open-source Intrusion Detection S
 <h2>Languages and Utilities Used</h2>
 
 - <b>Bash</b> 
-- <b>TCPDump</b>
-- <b>Wireshark</b>
-- <b>Tshark</b>
+- <b>Snort IDS</b>
+- <b>Nmap</b>
+- <b>ICMP</b>
    
 <h2>Environments Used </h2>
 
-- <b>Operating System: Kali Linux</b> (via VirtualBox on Windows 11 22H2)
-- <b>Network Environment: Local traffic capture from Google searches</b>
-- <b>Development/Testing Tools: Visual Studio Code, VirtualBox</b>
+- <b>Operating System: Debian Linux</b> (via VirtualBox on Windows 11 22H2)
+- <b>Network Environment: A home lab network setup to monitor and analyze simulated ICMP and Nmap traffic using Snort IDS</b>
+- <b>Development/Testing Tools: Snort IDS, VirtualBox</b>
 
 <h2>Program walk-through:</h2>
 
